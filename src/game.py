@@ -1,4 +1,5 @@
 from classes.board import Board
+from classes.solver import Solver
 from time import sleep
 
 
@@ -27,7 +28,8 @@ def game():
 
     if game_mode == 2:
         board.display()
-        board.solve(0, 0)
+        solver = Solver(board)
+        solver.solve(0, 0)
         print()
         board.display()
 
