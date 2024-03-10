@@ -11,6 +11,8 @@ GRID_HEIGHT = 540
 GRID_OFFSET = 15
 GRID_ROWS = 9
 GRID_COLS = 9
+CELL_WIDTH = GRID_WIDTH / GRID_COLS
+CELL_HEIGHT = GRID_HEIGHT / GRID_ROWS
 
 
 def main():
@@ -21,6 +23,8 @@ def main():
 
     grid = Grid(screen, GRID_WIDTH, GRID_HEIGHT, GRID_OFFSET, GRID_ROWS, GRID_COLS)
     key = 0
+    row = 0
+    col = 0
 
     running = True
 
@@ -31,32 +35,39 @@ def main():
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 position = pygame.mouse.get_pos()
-                (row, col) = grid.click(position)
+                x = position[0] - GRID_OFFSET
+                y = position[1] - GRID_OFFSET
+                row = int(y // CELL_HEIGHT)
+                col = int(x // CELL_WIDTH)
+                grid.click(row, col)
             if event.type == pygame.KEYDOWN:
-                if (event.key == pygame.K_1 or event.key == pygame.K_KP1):
+                if event.key == pygame.K_TAB:
+                    (row, col) = grid.next(row, col)
+                    grid.click(row, col)
+                if event.key == pygame.K_1 or event.key == pygame.K_KP1:
                     key = 1
-                if (event.key == pygame.K_2 or event.key == pygame.K_KP2):
+                if event.key == pygame.K_2 or event.key == pygame.K_KP2:
                     key = 2
-                if (event.key == pygame.K_3 or event.key == pygame.K_KP3):
+                if event.key == pygame.K_3 or event.key == pygame.K_KP3:
                     key = 3
-                if (event.key == pygame.K_4 or event.key == pygame.K_KP4):
+                if event.key == pygame.K_4 or event.key == pygame.K_KP4:
                     key = 4
-                if (event.key == pygame.K_5 or event.key == pygame.K_KP5):
+                if event.key == pygame.K_5 or event.key == pygame.K_KP5:
                     key = 5
-                if (event.key == pygame.K_6 or event.key == pygame.K_KP6):
+                if event.key == pygame.K_6 or event.key == pygame.K_KP6:
                     key = 6
-                if (event.key == pygame.K_7 or event.key == pygame.K_KP7):
+                if event.key == pygame.K_7 or event.key == pygame.K_KP7:
                     key = 7
-                if (event.key == pygame.K_8 or event.key == pygame.K_KP8):
+                if event.key == pygame.K_8 or event.key == pygame.K_KP8:
                     key = 8
-                if (event.key == pygame.K_9 or event.key == pygame.K_KP9):
+                if event.key == pygame.K_9 or event.key == pygame.K_KP9:
                     key = 9
-                if (event.key == pygame.K_DELETE or event.key == pygame.K_BACKSPACE):
+                if event.key == pygame.K_DELETE or event.key == pygame.K_BACKSPACE:
                     key = 0
                 grid.input(row, col, key)
-        solved = grid.check()
-        if (solved):
-            print("SOLVED!")
+        grid.check()
+        if (grid.solved()):
+            running = False
             
         pygame.display.flip()
         clock.tick(50)

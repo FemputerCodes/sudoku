@@ -1,4 +1,5 @@
 from classes.cell import Cell
+from typing import Tuple
 
 class Board:
     def __init__(self):
@@ -16,6 +17,7 @@ class Board:
                 [6, 9, 0, 0, 8, 0, 7, 0, 0],
                 [0, 4, 7, 0, 0, 0, 2, 0, 0],
             ]
+        
         self.cells = [
                 [Cell(row, col) for col in range(self.cols)]
                 for row in range(self.rows)
@@ -42,8 +44,26 @@ class Board:
             self.puzzle[row][col] = choice
 
 
+    def get_next(self, row: int, col: int) -> Tuple:
+        # base case: end of puzzle
+        if (row > 8):
+            return (0, 0)
+        # base case: end of the row
+        if (col > 8):
+            return self.get_next(row + 1, 0)
+        # base case: next is fixed
+        if not self.cells[row][col].get_fixed():
+            return (row, col)
+            
+        return self.get_next(row, col+1)
+
+
     def validate(self, row, col, choice):
         validation_results = [False, False, False]
+
+        if choice == 0:
+            return False
+        
         validation_results[0] = self.__check_row(row, col, choice)
         validation_results[1] = self.__check_col(row, col, choice)
         validation_results[2] = self.__check_subgrid(row, col, choice)
@@ -118,5 +138,6 @@ class Board:
     def display(self):
         for row in range(self.rows):
             for col in range(self.cols):
-                print(self.cells[row][col].get_number(), end=" ")
+                # print(self.cells[row][col].get_number(), end=" ")
+                print(self.cells[row][col].get_valid(), end=" ")
             print()

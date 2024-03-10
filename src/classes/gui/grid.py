@@ -59,39 +59,37 @@ class Grid():
                 ((self.offset + (j * cell_width)), (self.width + self.offset)),
                 line_width,
                 )
+   
     
-
-    def click(self, position: Tuple) -> Tuple:
-        x = position[0] - self.offset
-        y = position[1] - self.offset
-
-        cell_width = self.width / self.cols
-        cell_height = self.height / self.rows
-
-        position_row = int(y // cell_height)
-        position_col = int(x // cell_width)
-
+    def click(self, row, col):
         # deactivate any active buttton
-        for row in range(self.rows):
-            for col in range(self.cols):
-                self.buttons[row][col].deactivate()
-        
+        for r in range(self.rows):
+            for c in range(self.cols):
+                self.buttons[r][c].deactivate()
         # activate selected button
-        self.buttons[position_row][position_col].activate()
-        return (position_row, position_col)
+        self.buttons[row][col].activate()
+
+
+    def next(self, row, col):
+        return self.board.get_next(row, col+1)
 
 
     def input(self, row: int, col: int, choice: int):
         self.board.update(row, col, choice)
 
     
-    def check(self) -> bool:
-        solved_results = []
+    def check(self):
         for row in range(self.rows):
             for col in range(self.cols):
                 number = self.board.puzzle[row][col]
-                solved_results.append(self.board.validate(row, col, number))
-        for result in solved_results:
-            if not result:
-                return False
+                self.board.validate(row, col, number)
+        
+    
+    def solved(self) -> bool:
+        for row in range(self.rows):
+            for col in range(self.cols):
+                a_cell = self.board.get_cell(row, col)
+                if not a_cell.get_valid():
+                    return False
         return True
+

@@ -20,6 +20,7 @@ def game():
     print('*' * 100)
     print()
 
+
     game_mode = int(input('>>> '))
     print()
     sleep(1)
