@@ -18,7 +18,8 @@ class Cell:
     
     def insert_choice(self, a_choice):
         if not self.__fixed:
-            self.__number = a_choice
+            if a_choice in self.choices:
+                self.__number = a_choice
 
     def remove_choice(self):
         if not self.__fixed:
