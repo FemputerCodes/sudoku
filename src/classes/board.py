@@ -4,6 +4,7 @@ class Board:
     def __init__(self):
         self.rows = 9
         self.cols = 9
+        self.choices = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         self.puzzle = [
                 [0, 2, 0, 0, 0, 3, 1, 5, 0],
                 [8, 7, 0, 4, 1, 5, 0, 2, 6],
@@ -25,7 +26,11 @@ class Board:
                 number = self.puzzle[row][col]
                 self.cells[row][col].set_number(number)
 
- 
+    def update(self, row, col, choice):
+        if choice in self.choices:
+            self.cells[row][col].insert_choice(choice)
+
+
     def validate(self, row, col, choice):
         validation_results = [False, False, False]
         validation_results[0] = self.__check_row(row, choice)
@@ -71,8 +76,25 @@ class Board:
         return True
     
     
-    def update(self, row, col, choice):
-        self.cells[row][col].insert_choice(choice)
+    def solve(self, row, col):
+        # base case 1: end of grid (success!)
+        if row == len(self.puzzle):
+            return True
+        # base case 2: out of bounds, go to next row
+        if col == len(self.puzzle):
+            return self.solve(row+1, 0)
+        # base case 3: not empty, go to next cell
+        if self.puzzle[row][col] != 0:
+            return self.solve(row, col+1)
+        # try possible choices
+        for choice in self.choices:
+            if self.validate(row, col, choice):
+                self.cells[row][col].insert_choice(choice)
+                if self.solve(row, col+1):
+                    return True
+        # exhausted all possibilities (backtrack)
+        self.cells[row][col].remove_choice()
+        return False
 
     
     def display(self):
