@@ -22,16 +22,62 @@ class Board:
                 for row in range(self.rows)
             ]
 
-
-    def set_cells(self):
         for row in range(self.rows):
             for col in range(self.cols):
                 number = board[row][col]
                 self.cells[row][col].set_number(number)
 
 
+    def update(self, row, col, choice):
+        self.cells[row][col].insert_choice(choice)
+
+    def validate(self, row, col, choice):
+        validation_results = [False, False, False]
+        validation_results[0] = self.__check_row(row, choice)
+        validation_results[1] = self.__check_col(col,choice)
+        validation_results[2] = self.__check_subgrid(row, col, choice)
+        for result in validation_results:
+            if not result:
+                return False
+        return True
+
+
+    def __check_row(self, row, choice):
+        for col in range(self.cols):
+            if board[row][col] == choice:
+                return False
+        return True
+
+
+    def __check_col(self, col, choice):
+        for row in range(self.rows):
+            if board[row][col] == choice:
+                return False
+        return True
+        
+
+    def __check_subgrid(self, row, col, choice):
+        """
+        Using  interger division to find the subgrid.
+        Integer division returns the quotient as an integer.
+        This function returns the start row and start column of the
+        subgrid.
+        """
+        #determine the subgrid of the cell
+        subgrid_row = row // 3
+        subgrid_col = col // 3
+        start_row = subgrid_row * 3
+        start_col = subgrid_col * 3
+        # check subgrid
+        for sub_row in range(start_row, start_row + 3):
+            for sub_col in range(start_col, start_col + 3):
+                if board[sub_row][sub_col] == choice:
+                    return False
+        return True
+
+
     def display(self):
         for row in range(self.rows):
             for col in range(self.cols):
-                print(self.cells[row][col].number, end=" ")
+                print(self.cells[row][col].get_number(), end=" ")
             print()

@@ -5,15 +5,16 @@ def main():
     col = 0
     choice = 0
     board = Board()
-    board.set_cells()
     board.display()
 
-    # row = input("enter a valid row number: ")
-    # col = input("enter a valid col number: ")
-    # choice = input("enter a valid choice: ")
+    row = int(input("enter a valid row number: "))
+    col = int(input("enter a valid col number: "))
+    choice = int(input("enter a valid choice: "))
 
-    # board.get_cell(row, col, choice)
-    # board.display()
+    board.update(row, col, choice)
+    is_valid = board.validate(row, col, choice)
+    print("valid: ", is_valid)
+    board.display()
 
 
 if __name__ == "__main__":
