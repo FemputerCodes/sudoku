@@ -16,10 +16,6 @@ class Button():
         self.active = False
 
 
-    def get_text(self):
-        return self.text
-    
-
     def draw(self, screen: Surface, offset: int):
         self.text = str(self.cell.get_number())
         if self.text == '0':
@@ -28,7 +24,9 @@ class Button():
         y = offset + (self.row * self.height) + ((self.height - font.get_height()) // 2)
 
         button_text = font.render(self.text, True, "white")
-
+        if not self.cell.get_valid():
+            button_text = font.render(self.text, True, "red")
+         
         buttonframe = pygame.Rect(
                 offset + self.col * self.width,
                 offset + self.row * self.height,
@@ -41,11 +39,7 @@ class Button():
             pygame.draw.rect(screen, "#323232", buttonframe)
         
         screen.blit(button_text, (x, y))
-
-
-    def set_text(self, text):
-        self.text = text
-
+    
 
     def activate(self):
         is_fixed = self.cell.get_fixed()

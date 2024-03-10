@@ -36,30 +36,39 @@ class Board:
     def update(self, row, col, choice):
         if choice in self.choices:
             self.cells[row][col].insert_choice(choice)
+            self.puzzle[row][col] = choice
+        if choice == 0:
+            self.cells[row][col].remove_choice()
+            self.puzzle[row][col] = choice
 
 
     def validate(self, row, col, choice):
         validation_results = [False, False, False]
-        validation_results[0] = self.__check_row(row, choice)
-        validation_results[1] = self.__check_col(col,choice)
+        validation_results[0] = self.__check_row(row, col, choice)
+        validation_results[1] = self.__check_col(row, col, choice)
         validation_results[2] = self.__check_subgrid(row, col, choice)
         for result in validation_results:
             if not result:
+                if not self.cells[row][col].get_fixed():
+                    self.cells[row][col].set_valid(False)
                 return False
+        self.cells[row][col].set_valid(True)
         return True
 
 
-    def __check_row(self, row, choice):
-        for col in range(self.cols):
-            if self.puzzle[row][col] == choice:
-                return False
+    def __check_row(self, row, col, choice):
+        for j in range(self.cols):
+            if j != col:
+                if self.puzzle[row][j] == choice:
+                    return False
         return True
 
 
-    def __check_col(self, col, choice):
-        for row in range(self.rows):
-            if self.puzzle[row][col] == choice:
-                return False
+    def __check_col(self, row, col, choice):
+        for i in range(self.rows):
+            if i != row:
+                if self.puzzle[i][col] == choice:
+                    return False
         return True
         
 
@@ -78,8 +87,9 @@ class Board:
         # check subgrid
         for sub_row in range(start_row, start_row + 3):
             for sub_col in range(start_col, start_col + 3):
-                if self.puzzle[sub_row][sub_col] == choice:
-                    return False
+                if sub_row != row and sub_col != col:
+                    if self.puzzle[sub_row][sub_col] == choice:
+                        return False
         return True
     
     

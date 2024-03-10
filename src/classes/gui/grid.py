@@ -6,16 +6,16 @@ from typing import Tuple
 
 
 class Grid():
-    def __init__(self, board: Board, screen: Surface, width: int, height: int, offset: int, rows: int, cols: int):
-        self.board = board
+    def __init__(self, screen: Surface, width: int, height: int, offset: int, rows: int, cols: int):
         self.screen = screen
         self.width = width
         self.height = height
         self.offset = offset
         self.rows = rows
         self.cols = cols
+        self.board = Board()
         self.buttons = [
-            [Button(board.get_cell(row, col), row, col, self.width/self.cols, self.height/self.rows) for col in range(self.cols)]
+            [Button(self.board.get_cell(row, col), row, col, self.width/self.cols, self.height/self.rows) for col in range(self.cols)]
             for row in range(self.rows)
         ]
 
@@ -61,7 +61,7 @@ class Grid():
                 )
     
 
-    def click(self, position: Tuple):
+    def click(self, position: Tuple) -> Tuple:
         x = position[0] - self.offset
         y = position[1] - self.offset
 
@@ -78,3 +78,15 @@ class Grid():
         
         # activate selected button
         self.buttons[position_row][position_col].activate()
+        return (position_row, position_col)
+
+
+    def input(self, row: int, col: int, choice: int):
+        self.board.update(row, col, choice)
+
+    
+    def check(self):
+        for row in range(self.rows):
+            for col in range(self.cols):
+                number = self.board.puzzle[row][col]
+                self.board.validate(row, col, number)
