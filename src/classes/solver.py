@@ -1,6 +1,6 @@
 class Solver:
-    def __init__(self, board):
-        self.board = board
+    def __init__(self, grid):
+        self.board = grid.board
         self.choices = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         
     def solve(self, row, col):
@@ -16,7 +16,6 @@ class Solver:
         # try possible choices
         for choice in self.choices:
             if self.board.validate(row, col, choice):
-                # self.cells[row][col].insert_choice(choice)
                 self.board.update(row, col, choice)
                 if self.solve(row, col + 1):
                     return True

@@ -1,4 +1,5 @@
 import pygame
+from styles import SCREEN_COLOR, COLOR, INVALID, BUTTON_COLOR
 from pygame import Surface
 from classes.cell import Cell
 
@@ -23,9 +24,9 @@ class Button():
         x = offset + (self.col * self.width) + ((self.width - font.size(self.text)[0]) // 2)
         y = offset + (self.row * self.height) + ((self.height - font.get_height()) // 2)
 
-        button_text = font.render(self.text, True, "white")
+        button_text = font.render(self.text, True, COLOR)
         if not self.cell.get_valid():
-            button_text = font.render(self.text, True, "red")
+            button_text = font.render(self.text, True, INVALID)
          
         buttonframe = pygame.Rect(
                 offset + self.col * self.width,
@@ -34,9 +35,9 @@ class Button():
                 self.height,
             )
         if self.active:
-            pygame.draw.rect(screen, "#555555", buttonframe)
+            pygame.draw.rect(screen, BUTTON_COLOR, buttonframe)
         else:
-            pygame.draw.rect(screen, "#323232", buttonframe)
+            pygame.draw.rect(screen, SCREEN_COLOR, buttonframe)
         
         screen.blit(button_text, (x, y))
     

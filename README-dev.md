@@ -10,6 +10,10 @@ To get started, follow these steps:
 3. Ensure that the Python interpreter is set to "Python 3.11.6 ('.venv':venv) ./venv/bin/python".
 4. Run `make run` to run the program
 
+# Pygbag
+
+1. run `pip install pygbag`
+
 ## References
 
 Special thanks to [techwithtim](https://github.com/techwithtim/) for inspiring and providing insights, particularly in the development of the graphical user interface (GUI). You can explore their work at [Sudoku-GUI-Solver](https://github.com/techwithtim/Sudoku-GUI-Solver) or on their [youtube channel](https://www.youtube.com/watch?v=eqUwSA0xI-s&t=871s)

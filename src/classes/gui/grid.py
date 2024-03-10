@@ -61,7 +61,7 @@ class Grid():
                 )
    
     
-    def click(self, row, col):
+    def click(self, row: int, col: int):
         # deactivate any active buttton
         for r in range(self.rows):
             for c in range(self.cols):
@@ -70,7 +70,7 @@ class Grid():
         self.buttons[row][col].activate()
 
 
-    def next(self, row, col):
+    def next(self, row, col) -> Tuple:
         return self.board.get_next(row, col+1)
 
 
@@ -92,4 +92,3 @@ class Grid():
                 if not a_cell.get_valid():
                     return False
         return True
-

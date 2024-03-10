@@ -1,8 +1,12 @@
+import asyncio
 import pygame
 from game import game
+from styles import SCREEN_COLOR, COLOR, BUTTON_COLOR
 from classes.gui.grid import Grid
+from classes.solver import Solver
 
 pygame.font.init()
+font = pygame.font.SysFont(None, 40)
 
 SCREEN_WIDTH = 570
 SCREEN_HEIGHT = 670
@@ -13,18 +17,30 @@ GRID_ROWS = 9
 GRID_COLS = 9
 CELL_WIDTH = GRID_WIDTH / GRID_COLS
 CELL_HEIGHT = GRID_HEIGHT / GRID_ROWS
+BUTTON_WIDTH = 100
+BUTTON_HEIGHT = 75
 
 
-def main():
+async def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Sudoku")
-    screen.fill("#323232")
+    screen.fill(SCREEN_COLOR)
     clock = pygame.time.Clock()
 
     grid = Grid(screen, GRID_WIDTH, GRID_HEIGHT, GRID_OFFSET, GRID_ROWS, GRID_COLS)
     key = 0
     row = 0
     col = 0
+
+    solve_text = font.render(str("Solve"), True, COLOR)
+    solve_button = pygame.Rect(
+      (SCREEN_WIDTH / 2) - BUTTON_WIDTH - GRID_OFFSET,
+      GRID_HEIGHT + 2*GRID_OFFSET,
+      BUTTON_WIDTH,
+      BUTTON_HEIGHT
+    )
+    pygame.draw.rect(screen, BUTTON_COLOR, solve_button)
+    screen.blit(solve_text, (solve_button.left + 15, solve_button.top + 25))
 
     running = True
 
@@ -35,11 +51,15 @@ def main():
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 position = pygame.mouse.get_pos()
-                x = position[0] - GRID_OFFSET
-                y = position[1] - GRID_OFFSET
-                row = int(y // CELL_HEIGHT)
-                col = int(x // CELL_WIDTH)
-                grid.click(row, col)
+                if GRID_OFFSET <= position[0] <= (GRID_WIDTH + GRID_OFFSET) and GRID_OFFSET <= position[1] <=(GRID_HEIGHT + GRID_OFFSET):
+                    x = position[0] - GRID_OFFSET
+                    y = position[1] - GRID_OFFSET
+                    row = int(y // CELL_HEIGHT)
+                    col = int(x // CELL_WIDTH)
+                    grid.click(row, col)
+                else:
+                    solver = Solver(grid)
+                    solver.solve(0, 0)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_TAB:
                     key = 0
@@ -67,15 +87,17 @@ def main():
                     key = 0
                 grid.input(row, col, key)
         grid.check()
-        if (grid.solved()):
-            running = False
-            
+        # if (grid.solved()):
+            # running = False
         pygame.display.flip()
         clock.tick(50)
 
-    pygame.quit()
+        await asyncio.sleep(0)
+        if not running:
+            pygame.quit()
+            return
 
 
 if __name__ == "__main__":
     # game()
-    main()
+    asyncio.run(main())
