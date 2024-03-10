@@ -8,10 +8,9 @@ class Cell:
 
     
     def set_number(self, a_number):
+        self.number = a_number
         if a_number != 0:
             self.fixed = True
-        else:
-            self.number = a_number
 
     
     def insert_choice(self, a_choice):
