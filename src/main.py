@@ -42,6 +42,7 @@ def main():
                 grid.click(row, col)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_TAB:
+                    key = 0
                     (row, col) = grid.next(row, col)
                     grid.click(row, col)
                 if event.key == pygame.K_1 or event.key == pygame.K_KP1:
