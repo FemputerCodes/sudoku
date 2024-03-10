@@ -26,6 +26,7 @@ class Board:
                 number = self.puzzle[row][col]
                 self.cells[row][col].set_number(number)
 
+
     def update(self, row, col, choice):
         if choice in self.choices:
             self.cells[row][col].insert_choice(choice)

@@ -1,5 +1,6 @@
 import pygame
 from game import game
+from classes.gui.grid import Grid
 
 pygame.font.init()
 
@@ -11,9 +12,6 @@ GRID_OFFSET = 15
 GRID_ROWS = 9
 GRID_COLS = 9
 
-BUTTON_WIDTH = 100
-BUTTON_HEIGHT = 75
-
 
 def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -21,12 +19,21 @@ def main():
     screen.fill("#323232")
     clock = pygame.time.Clock()
 
+    grid = Grid(screen, GRID_WIDTH, GRID_HEIGHT, GRID_OFFSET, GRID_ROWS, GRID_COLS)
+
     running = True
 
     while(running):
+        grid.draw()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                position = pygame.mouse.get_pos()
+                x = position[0]
+                y = position[1]
+                grid.click(position)
+            
         pygame.display.flip()
         clock.tick(50)
 
