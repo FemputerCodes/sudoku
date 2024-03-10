@@ -8,11 +8,15 @@ class Cell:
     
     def set_number(self, a_number):
         self.__number = a_number
-        if a_number != 0:
-            self.__fixed = True
+
+    def set_fixed(self, is_fixed):
+        self.__fixed = is_fixed
 
     def get_number(self):
         return self.__number
+
+    def get_fixed(self):
+        return self.__fixed
     
     def insert_choice(self, a_choice):
         if not self.__fixed:

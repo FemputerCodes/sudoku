@@ -1,5 +1,6 @@
 import pygame
 from game import game
+from classes.board import Board
 from classes.gui.grid import Grid
 
 pygame.font.init()
@@ -19,7 +20,8 @@ def main():
     screen.fill("#323232")
     clock = pygame.time.Clock()
 
-    grid = Grid(screen, GRID_WIDTH, GRID_HEIGHT, GRID_OFFSET, GRID_ROWS, GRID_COLS)
+    board = Board() 
+    grid = Grid(board, screen, GRID_WIDTH, GRID_HEIGHT, GRID_OFFSET, GRID_ROWS, GRID_COLS)
 
     running = True
 

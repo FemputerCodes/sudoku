@@ -25,7 +25,13 @@ class Board:
             for col in range(self.cols):
                 number = self.puzzle[row][col]
                 self.cells[row][col].set_number(number)
+                if number != 0:
+                    self.cells[row][col].set_fixed(True)
 
+
+    def get_cell(self, row, col) -> Cell:
+        return self.cells[row][col]
+    
 
     def update(self, row, col, choice):
         if choice in self.choices:

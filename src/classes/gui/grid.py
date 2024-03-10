@@ -1,11 +1,13 @@
 import pygame
+from classes.board import Board
 from classes.gui.button import Button
 from pygame import Surface
 from typing import Tuple
 
 
 class Grid():
-    def __init__(self, screen: Surface, width: int, height: int, offset: int, rows: int, cols: int):
+    def __init__(self, board: Board, screen: Surface, width: int, height: int, offset: int, rows: int, cols: int):
+        self.board = board
         self.screen = screen
         self.width = width
         self.height = height
@@ -13,7 +15,7 @@ class Grid():
         self.rows = rows
         self.cols = cols
         self.buttons = [
-            [Button(row, col, self.width/self.cols, self.height/self.rows) for col in range(self.cols)]
+            [Button(board.get_cell(row, col), row, col, self.width/self.cols, self.height/self.rows) for col in range(self.cols)]
             for row in range(self.rows)
         ]
 
