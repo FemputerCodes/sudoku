@@ -85,8 +85,13 @@ class Grid():
         self.board.update(row, col, choice)
 
     
-    def check(self):
+    def check(self) -> bool:
+        solved_results = []
         for row in range(self.rows):
             for col in range(self.cols):
                 number = self.board.puzzle[row][col]
-                self.board.validate(row, col, number)
+                solved_results.append(self.board.validate(row, col, number))
+        for result in solved_results:
+            if not result:
+                return False
+        return True

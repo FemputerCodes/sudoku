@@ -99,18 +99,19 @@ class Board:
             return True
         # base case 2: out of bounds, go to next row
         if col == len(self.puzzle):
-            return self.solve(row+1, 0)
+            return self.solve(row + 1, 0)
         # base case 3: not empty, go to next cell
         if self.puzzle[row][col] != 0:
-            return self.solve(row, col+1)
+            return self.solve(row, col + 1)
         # try possible choices
         for choice in self.choices:
             if self.validate(row, col, choice):
-                self.cells[row][col].insert_choice(choice)
-                if self.solve(row, col+1):
+                # self.cells[row][col].insert_choice(choice)
+                self.update(row, col, choice)
+                if self.solve(row, col + 1):
                     return True
         # exhausted all possibilities (backtrack)
-        self.cells[row][col].remove_choice()
+        self.update(row, col, 0)
         return False
 
     

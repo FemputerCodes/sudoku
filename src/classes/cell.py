@@ -4,13 +4,15 @@ class Cell:
         self.col = col
         self.__number = 0
         self.__fixed = False
-        self.__valid = True
+        self.__valid = False
     
     def set_number(self, a_number):
         self.__number = a_number
 
     def set_fixed(self, is_fixed):
         self.__fixed = is_fixed
+        if is_fixed:
+            self.__valid = True
 
     def set_valid(self, is_valid):
         self.__valid = is_valid

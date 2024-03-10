@@ -54,7 +54,9 @@ def main():
                 if (event.key == pygame.K_DELETE or event.key == pygame.K_BACKSPACE):
                     key = 0
                 grid.input(row, col, key)
-        grid.check()
+        solved = grid.check()
+        if (solved):
+            print("SOLVED!")
             
         pygame.display.flip()
         clock.tick(50)
