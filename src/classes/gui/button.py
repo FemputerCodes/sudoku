@@ -40,6 +40,9 @@ class Button():
 
     def click(self):
         self.active = True
-        self.solve(0, 0)
         # time.sleep(2)
         # self.active = False
+
+    
+    def action(self):
+        pass

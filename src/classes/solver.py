@@ -1,6 +1,6 @@
 class Solver():
-    def __init__(self):
-        pass
+    def __init__(self, grid):
+        self.board = grid.board
 
     def solve(self, row, col):
         # base case 1: end of grid (success!)
