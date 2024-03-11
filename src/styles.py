@@ -1,4 +1,0 @@
-SCREEN_COLOR = "#323232"
-COLOR = "white"
-INVALID = "red"
-BUTTON_COLOR = "#555555"
