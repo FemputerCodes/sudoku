@@ -1,45 +1,54 @@
 import pygame
 from src.classes.board import Board
-from src.classes.gui.button import Button
+from src.classes.gui.square import Square
+from src.styles import GRID_COLOR, GRID_LINE_COLOR
 from pygame import Surface
 from typing import Tuple
 
 
 class Grid():
-    def __init__(self, screen: Surface, width: int, height: int, offset: int, rows: int, cols: int):
+    def __init__(self, screen: Surface, width: int, height: int, width_offset: int, height_offset: int, rows: int, cols: int):
         self.screen = screen
         self.width = width
         self.height = height
-        self.offset = offset
+        self.width_offset = width_offset
+        self.height_offset = height_offset
         self.rows = rows
         self.cols = cols
         self.board = Board()
-        self.buttons = [
-            [Button(self.board.get_cell(row, col), row, col, self.width/self.cols, self.height/self.rows) for col in range(self.cols)]
+        self.squares = [
+            [Square(self.board.get_cell(row, col), row, col, self.width/self.cols, self.height/self.rows) for col in range(self.cols)]
             for row in range(self.rows)
         ]
 
 
     def draw(self):
+        gridframe = pygame.Rect(
+            self.width_offset-1,
+            self.height_offset-1,
+            self.width+2,
+            self.height+2,
+        )
+        pygame.draw.rect(self.screen, GRID_COLOR, gridframe, 1, border_radius=10)
         for row in range(self.rows):
             for col in range(self.cols):
-                self.buttons[row][col].draw(self.screen, self.offset)
+                self.squares[row][col].draw(self.screen, self.width_offset, self.height_offset)
         self.__draw_horizontal_lines()
         self.__draw_vertical_lines()
 
     
     def __draw_horizontal_lines(self):
         cell_height = self.height / self.rows
-        for i in range(0, self.rows + 1):
+        for i in range(1, self.rows):
             if i % 3 == 0:
                 line_width = 4
             else:
                 line_width = 1
             pygame.draw.line(
                 self.screen,
-                "white",
-                (self.offset, (self.offset + (i * cell_height))),
-                ((self.height + self.offset), (self.offset + (i * cell_height))),
+                GRID_LINE_COLOR,
+                (self.width_offset, (self.height_offset + (i * cell_height))),
+                ((self.height + self.width_offset), (self.height_offset + (i * cell_height))),
                 line_width,
                 )
 
@@ -47,16 +56,16 @@ class Grid():
     def __draw_vertical_lines(self):
         cell_width = self.width / self.cols
 
-        for j in range(0, self.cols + 1):
+        for j in range(1, self.cols):
             if j % 3 == 0:
-                line_width = 4
+                line_width = 3
             else:
                 line_width = 1
             pygame.draw.line(
                 self.screen,
-                "white",
-                ((self.offset + (j * cell_width)), self.offset),
-                ((self.offset + (j * cell_width)), (self.width + self.offset)),
+                GRID_LINE_COLOR,
+                ((self.width_offset + (j * cell_width)), self.height_offset),
+                ((self.width_offset + (j * cell_width)), (self.width + self.height_offset)),
                 line_width,
                 )
    
@@ -65,9 +74,9 @@ class Grid():
         # deactivate any active buttton
         for r in range(self.rows):
             for c in range(self.cols):
-                self.buttons[r][c].deactivate()
+                self.squares[r][c].deactivate()
         # activate selected button
-        self.buttons[row][col].activate()
+        self.squares[row][col].activate()
 
 
     def next(self, row, col) -> Tuple:

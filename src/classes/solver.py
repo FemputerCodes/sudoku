@@ -1,8 +1,7 @@
-class Solver:
-    def __init__(self, grid):
-        self.board = grid.board
-        self.choices = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        
+class Solver():
+    def __init__(self):
+        pass
+
     def solve(self, row, col):
         # base case 1: end of grid (success!)
         if row == len(self.board.puzzle):

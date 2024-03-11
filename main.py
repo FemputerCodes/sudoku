@@ -1,25 +1,37 @@
 import asyncio
 import pygame
 from src.game import game
-from src.styles import SCREEN_COLOR, COLOR, BUTTON_COLOR
+from src.styles import SCREEN_COLOR
 from src.classes.gui.grid import Grid
-from src.classes.solver import Solver
+from src.classes.gui.button import Button
 
 pygame.font.init()
 font = pygame.font.SysFont(None, 40)
 
-SCREEN_WIDTH = 570
+SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 670
 GRID_WIDTH = 540
 GRID_HEIGHT = 540
-GRID_OFFSET = 15
+GRID_WIDTH_OFFSET = (SCREEN_WIDTH - GRID_WIDTH) / 2
+GRID_HEIGHT_OFFSET = 15
 GRID_ROWS = 9
 GRID_COLS = 9
 CELL_WIDTH = GRID_WIDTH / GRID_COLS
 CELL_HEIGHT = GRID_HEIGHT / GRID_ROWS
-BUTTON_WIDTH = 100
-BUTTON_HEIGHT = 75
 
+SOLVE_WIDTH = 120
+SOLVE_HEIGHT = 60
+SOLVE_START_X = (SCREEN_WIDTH / 2) - (SOLVE_WIDTH + 5)
+SOLVE_END_X = SOLVE_START_X + SOLVE_WIDTH
+SOLVE_START_Y = GRID_HEIGHT + (2 * GRID_HEIGHT_OFFSET)
+SOLVE_END_Y = SOLVE_START_Y + SOLVE_HEIGHT
+
+RESET_WIDTH = 120
+RESET_HEIGHT = 60
+RESET_START_X = (SCREEN_WIDTH / 2) + 5
+RESET_END_X = RESET_START_X + RESET_WIDTH
+RESET_START_Y = GRID_HEIGHT + (2 * GRID_HEIGHT_OFFSET)
+RESET_END_Y = RESET_START_Y + RESET_HEIGHT
 
 async def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -27,39 +39,34 @@ async def main():
     screen.fill(SCREEN_COLOR)
     clock = pygame.time.Clock()
 
-    grid = Grid(screen, GRID_WIDTH, GRID_HEIGHT, GRID_OFFSET, GRID_ROWS, GRID_COLS)
+    grid = Grid(screen, GRID_WIDTH, GRID_HEIGHT, GRID_WIDTH_OFFSET, GRID_HEIGHT_OFFSET, GRID_ROWS, GRID_COLS)
+    solver = Button(screen, grid, "SOLVE", SOLVE_WIDTH, SOLVE_HEIGHT, SOLVE_START_X, SOLVE_END_X, SOLVE_START_Y, SOLVE_END_Y)
+    reset = Button(screen, grid, "RESET", RESET_WIDTH, RESET_HEIGHT, RESET_START_X, RESET_END_X, RESET_START_Y, RESET_END_Y)
+
     key = 0
     row = 0
     col = 0
-
-    solve_text = font.render(str("Solve"), True, COLOR)
-    solve_button = pygame.Rect(
-      (SCREEN_WIDTH / 2) - BUTTON_WIDTH - GRID_OFFSET,
-      GRID_HEIGHT + 2*GRID_OFFSET,
-      BUTTON_WIDTH,
-      BUTTON_HEIGHT
-    )
-    pygame.draw.rect(screen, BUTTON_COLOR, solve_button)
-    screen.blit(solve_text, (solve_button.left + 15, solve_button.top + 25))
 
     running = True
 
     while(running):
         grid.draw()
+        solver.draw()
+        reset.draw()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 position = pygame.mouse.get_pos()
-                if GRID_OFFSET <= position[0] <= (GRID_WIDTH + GRID_OFFSET) and GRID_OFFSET <= position[1] <=(GRID_HEIGHT + GRID_OFFSET):
-                    x = position[0] - GRID_OFFSET
-                    y = position[1] - GRID_OFFSET
+                if GRID_WIDTH_OFFSET <= position[0] <= (GRID_WIDTH + GRID_WIDTH_OFFSET) and GRID_HEIGHT_OFFSET <= position[1] <=(GRID_HEIGHT + GRID_HEIGHT_OFFSET):
+                    x = position[0] - GRID_WIDTH_OFFSET
+                    y = position[1] - GRID_HEIGHT_OFFSET
                     row = int(y // CELL_HEIGHT)
                     col = int(x // CELL_WIDTH)
                     grid.click(row, col)
-                else:
-                    solver = Solver(grid)
-                    solver.solve(0, 0)
+                elif SOLVE_START_X <= position[0] <= SOLVE_END_X and SOLVE_START_Y <= position[1] <= SOLVE_END_Y:
+                    pass
+                    # solver.click()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_TAB:
                     key = 0
