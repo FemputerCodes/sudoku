@@ -1,5 +1,5 @@
-from classes.board import Board
-from classes.solver import Solver
+from .classes.board import Board
+from .classes.solver import Solver
 from time import sleep
 
 

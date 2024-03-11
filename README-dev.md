@@ -13,6 +13,7 @@ To get started, follow these steps:
 # Pygbag
 
 1. run `pip install pygbag`
+2. cd back out of you app and run `pygame sudoku`
 
 ## References
 

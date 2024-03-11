@@ -1,6 +1,6 @@
 import pygame
-from classes.board import Board
-from classes.gui.button import Button
+from src.classes.board import Board
+from src.classes.gui.button import Button
 from pygame import Surface
 from typing import Tuple
 

@@ -1,7 +1,7 @@
 import pygame
-from styles import SCREEN_COLOR, COLOR, INVALID, BUTTON_COLOR
+from src.styles import SCREEN_COLOR, COLOR, INVALID, BUTTON_COLOR
 from pygame import Surface
-from classes.cell import Cell
+from src.classes.cell import Cell
 
 pygame.font.init()
 font = pygame.font.SysFont(None, 40)

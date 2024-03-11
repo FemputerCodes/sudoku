@@ -17,7 +17,7 @@ venv:
 	. ./.venv/bin/activate
 
 run: venv
-	$(PYTHON) src/main.py
+	$(PYTHON) main.py
 
 clean:
 	rm -rf .venv

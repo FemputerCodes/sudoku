@@ -1,4 +1,4 @@
-from classes.cell import Cell
+from .cell import Cell
 from typing import Tuple
 
 class Board:
