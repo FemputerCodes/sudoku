@@ -12,8 +12,11 @@ To get started, follow these steps:
 
 # Pygbag
 
-1. run `pip install pygbag`
-2. cd back out of you app and run `pygame sudoku`
+1. run `pip3 install pygbag`
+2. cd back out of you app and run `pygbag sudoku`
+   - if you get a certification warning run a Certificates.command `open /Applications/Python\ 3.6/Install\ Certificates.command`
+3. Test the pygame program in your browser `http://localhost:8000/`
+4. Under the build folder, zip the web folder.
 
 ## References
 
