@@ -67,7 +67,7 @@ async def main():
                     grid.click(row, col)
                 elif SOLVE_START_X <= position[0] <= SOLVE_END_X and SOLVE_START_Y <= position[1] <= SOLVE_END_Y:
                     solver.click()
-                    # solve.solve(0, 0)
+                    solver.gui_solve(0, 0)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_TAB:
                     key = 0

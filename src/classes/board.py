@@ -133,6 +133,7 @@ class Board:
         self.update(row, col, 0)
         return False
     
+    
     def display(self):
         for row in range(self.rows):
             for col in range(self.cols):
