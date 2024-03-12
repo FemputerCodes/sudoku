@@ -112,6 +112,26 @@ class Board:
                         return False
         return True
 
+
+    def solve(self, row, col):
+        # base case 1: end of grid (success!)
+        if row == len(self.puzzle):
+            return True
+        # base case 2: out of bounds, go to next row
+        if col == len(self.puzzle):
+            return self.solve(row + 1, 0)
+        # base case 3: not empty, go to next cell
+        if self.puzzle[row][col] != 0:
+            return self.solve(row, col + 1)
+        # try possible choices
+        for choice in self.choices:
+            if self.validate(row, col, choice):
+                self.update(row, col, choice)
+                if self.solve(row, col + 1):
+                    return True
+        # exhausted all possibilities (backtrack)
+        self.update(row, col, 0)
+        return False
     
     def display(self):
         for row in range(self.rows):

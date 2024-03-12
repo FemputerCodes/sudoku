@@ -4,7 +4,6 @@ from src.game import game
 from src.styles import SCREEN_COLOR
 from src.classes.gui.grid import Grid
 from src.classes.gui.button import Button
-# from src.classes.solver import Solver
 
 pygame.font.init()
 font = pygame.font.SysFont(None, 40)

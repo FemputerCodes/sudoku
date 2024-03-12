@@ -1,6 +1,5 @@
 import pygame
 from src.styles import TEXT_COLOR, BUTTON_COLOR, BUTTON_COLOR_ACTIVE
-import time
 
 pygame.font.init()
 font = pygame.font.SysFont(None, 40)
@@ -39,9 +38,7 @@ class Button():
 
 
     def click(self):
-        self.active = True
-        # time.sleep(2)
-        # self.active = False
+        self.active = not self.active
 
     
     def action(self):
