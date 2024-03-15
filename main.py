@@ -39,8 +39,8 @@ RESET_END_Y = RESET_START_Y + RESET_HEIGHT
 def redraw(screen, grid, solver, reset, play_time):
     screen.fill(SCREEN_COLOR)
     # draw time
-    text = font.render("Time: " + str(play_time) + " seconds", 1, (0,0,0))
-    screen.blit(text, (SCREEN_WIDTH-250, SCREEN_HEIGHT-40))
+    # text = font.render("Time: " + str(play_time) + " seconds", 1, (0,0,0))
+    # screen.blit(text, (SCREEN_WIDTH-250, SCREEN_HEIGHT-40))
     # draw grid and buttons
     grid.draw()
     solver.draw()

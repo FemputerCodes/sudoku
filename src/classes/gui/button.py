@@ -41,6 +41,7 @@ class Button():
 
     
     def solve(self):
+        self.reset()
         self.grid.solve()
 
     

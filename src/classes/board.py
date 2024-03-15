@@ -36,12 +36,13 @@ class Board:
     
 
     def update(self, row, col, choice):
-        if choice in self.choices:
-            self.cells[row][col].insert_choice(choice)
-            self.puzzle[row][col] = choice
-        if choice == 0:
-            self.cells[row][col].remove_choice()
-            self.puzzle[row][col] = choice
+        if not self.cells[row][col].get_fixed():
+            if choice in self.choices:
+                self.cells[row][col].insert_choice(choice)
+                self.puzzle[row][col] = choice
+            if choice == 0:
+                self.cells[row][col].remove_choice()
+                self.puzzle[row][col] = choice
 
 
     def get_next(self, row: int, col: int) -> Tuple:
