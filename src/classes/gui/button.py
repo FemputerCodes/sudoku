@@ -1,7 +1,6 @@
 import pygame
 from src.styles import TEXT_COLOR, BUTTON_COLOR, BUTTON_COLOR_ACTIVE
 
-pygame.font.init()
 font = pygame.font.SysFont(None, 40)
 
 class Button():
@@ -41,29 +40,34 @@ class Button():
         self.active = not self.active
 
     
-    def gui_solve(self, row, col):
+    def solve(self):
+        self.grid.solve()
+
+    
+    def gui_solve(self, row, col, event):
         # base case 1: end of grid (success!)
         if row == len(self.grid.board.puzzle):
             return True
         # base case 2: out of bounds, go to next row
         if col == len(self.grid.board.puzzle):
-            return self.gui_solve(row + 1, 0)
+            return self.gui_solve(row + 1, 0, event)
         # base case 3: not empty, go to next cell
         if self.grid.board.puzzle[row][col] != 0:
-            return self.gui_solve(row, col + 1)
+            return self.gui_solve(row, col + 1, event)
         # try possible choices
         for choice in self.choices:
             self.grid.click(row, col)
             self.grid.input(row, col, choice)
+            self.grid.draw()
+            pygame.display.update()
+            pygame.time.delay(100)
             if self.grid.board.validate(row, col, choice):
-                if self.gui_solve(row, col + 1):
+                if self.gui_solve(row, col + 1, event):
                     return True
-            # pygame.display.update()
-            # pygame.time.delay(100)
         # exhausted all possibilities (backtrack)
         self.grid.input(row, col, 0)
         return False
-    
+        
     def reset(self):
         for row in range(9):
             for col in range(9):

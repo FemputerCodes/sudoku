@@ -4,7 +4,9 @@ from src.game import game
 from src.styles import SCREEN_COLOR
 from src.classes.gui.grid import Grid
 from src.classes.gui.button import Button
+import time
 
+pygame.init()
 pygame.font.init()
 font = pygame.font.SysFont(None, 40)
 
@@ -34,6 +36,16 @@ RESET_START_Y = GRID_HEIGHT + (2 * GRID_HEIGHT_OFFSET)
 RESET_END_Y = RESET_START_Y + RESET_HEIGHT
 
 
+def redraw(screen, grid, solver, reset, play_time):
+    screen.fill(SCREEN_COLOR)
+    # draw time
+    text = font.render("Time: " + str(play_time) + " seconds", 1, (0,0,0))
+    screen.blit(text, (SCREEN_WIDTH-250, SCREEN_HEIGHT-40))
+    # draw grid and buttons
+    grid.draw()
+    solver.draw()
+    reset.draw()
+
 async def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     screen.fill(SCREEN_COLOR)
@@ -50,11 +62,10 @@ async def main():
     col = 0
 
     running = True
+    start = time.time()
 
     while(running):
-        grid.draw()
-        solver.draw()
-        reset.draw()
+        play_time = round(time.time() - start)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -68,7 +79,7 @@ async def main():
                     grid.click(row, col)
                 elif SOLVE_START_X <= position[0] <= SOLVE_END_X and SOLVE_START_Y <= position[1] <= SOLVE_END_Y:
                     solver.click()
-                    solver.gui_solve(0, 0)
+                    success = solver.solve()
                 elif RESET_START_X <= position[0] <= RESET_END_X and RESET_START_Y <= position[1] <= RESET_END_Y:
                     reset.click()
                     reset.reset()
@@ -79,31 +90,45 @@ async def main():
                     grid.click(row, col)
                 if event.key == pygame.K_1 or event.key == pygame.K_KP1:
                     key = 1
+                    grid.input(row, col, key)
                 if event.key == pygame.K_2 or event.key == pygame.K_KP2:
                     key = 2
+                    grid.input(row, col, key)
                 if event.key == pygame.K_3 or event.key == pygame.K_KP3:
                     key = 3
+                    grid.input(row, col, key)
                 if event.key == pygame.K_4 or event.key == pygame.K_KP4:
                     key = 4
+                    grid.input(row, col, key)
                 if event.key == pygame.K_5 or event.key == pygame.K_KP5:
                     key = 5
+                    grid.input(row, col, key)
                 if event.key == pygame.K_6 or event.key == pygame.K_KP6:
                     key = 6
+                    grid.input(row, col, key)
                 if event.key == pygame.K_7 or event.key == pygame.K_KP7:
                     key = 7
+                    grid.input(row, col, key)
                 if event.key == pygame.K_8 or event.key == pygame.K_KP8:
                     key = 8
+                    grid.input(row, col, key)
                 if event.key == pygame.K_9 or event.key == pygame.K_KP9:
                     key = 9
+                    grid.input(row, col, key)
                 if event.key == pygame.K_DELETE or event.key == pygame.K_BACKSPACE:
                     key = 0
-                grid.input(row, col, key)
+                    grid.input(row, col, key)
+                if event.key == pygame.K_s:
+                    solver.gui_solve(0, 0, event)
         grid.check()
+
         # if (grid.solved()):
             # running = False
 
-        pygame.display.flip()
-        clock.tick(50)
+        redraw(screen, grid, solver, reset, play_time)
+
+        pygame.display.update()
+        # clock.tick(50)
 
         await asyncio.sleep(0)
         if not running:

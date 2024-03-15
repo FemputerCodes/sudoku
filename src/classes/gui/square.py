@@ -61,3 +61,7 @@ class Square():
     
     def deactivate(self):
         self.active = False
+
+
+    def get_active_state(self):
+        return self.active

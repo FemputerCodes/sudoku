@@ -101,3 +101,6 @@ class Grid():
                 if not a_cell.get_valid():
                     return False
         return True
+
+    def solve(self):
+        self.board.solve(0, 0)
