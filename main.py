@@ -33,16 +33,17 @@ RESET_END_X = RESET_START_X + RESET_WIDTH
 RESET_START_Y = GRID_HEIGHT + (2 * GRID_HEIGHT_OFFSET)
 RESET_END_Y = RESET_START_Y + RESET_HEIGHT
 
+
 async def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption("Sudoku")
     screen.fill(SCREEN_COLOR)
+    pygame.display.set_caption("Sudoku")
+    
     clock = pygame.time.Clock()
 
     grid = Grid(screen, GRID_WIDTH, GRID_HEIGHT, GRID_WIDTH_OFFSET, GRID_HEIGHT_OFFSET, GRID_ROWS, GRID_COLS)
     solver = Button(screen, grid, "SOLVE", SOLVE_WIDTH, SOLVE_HEIGHT, SOLVE_START_X, SOLVE_END_X, SOLVE_START_Y, SOLVE_END_Y)
     reset = Button(screen, grid, "RESET", RESET_WIDTH, RESET_HEIGHT, RESET_START_X, RESET_END_X, RESET_START_Y, RESET_END_Y)
-    # solve = Solver(grid)
 
     key = 0
     row = 0
@@ -68,6 +69,9 @@ async def main():
                 elif SOLVE_START_X <= position[0] <= SOLVE_END_X and SOLVE_START_Y <= position[1] <= SOLVE_END_Y:
                     solver.click()
                     solver.gui_solve(0, 0)
+                elif RESET_START_X <= position[0] <= RESET_END_X and RESET_START_Y <= position[1] <= RESET_END_Y:
+                    reset.click()
+                    reset.reset()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_TAB:
                     key = 0
@@ -97,6 +101,7 @@ async def main():
         grid.check()
         # if (grid.solved()):
             # running = False
+
         pygame.display.flip()
         clock.tick(50)
 

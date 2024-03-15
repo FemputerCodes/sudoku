@@ -7,7 +7,7 @@ font = pygame.font.SysFont(None, 40)
 class Button():
     def __init__(self, screen, grid, text, width, height, start_x, end_x, start_y, end_y):
         self.screen = screen
-        self.board = grid.board
+        self.grid = grid
         self.text = text
         self.width = width
         self.height = height
@@ -43,22 +43,28 @@ class Button():
     
     def gui_solve(self, row, col):
         # base case 1: end of grid (success!)
-        if row == len(self.board.puzzle):
+        if row == len(self.grid.board.puzzle):
             return True
         # base case 2: out of bounds, go to next row
-        if col == len(self.board.puzzle):
-            return self.solve(row + 1, 0)
+        if col == len(self.grid.board.puzzle):
+            return self.gui_solve(row + 1, 0)
         # base case 3: not empty, go to next cell
-        if self.board.puzzle[row][col] != 0:
-            return self.solve(row, col + 1)
+        if self.grid.board.puzzle[row][col] != 0:
+            return self.gui_solve(row, col + 1)
         # try possible choices
         for choice in self.choices:
+            self.grid.click(row, col)
             self.grid.input(row, col, choice)
-            if self.board.validate(row, col, choice):
-            #     self.update(row, col, choice)
-                if self.solve(row, col + 1):
+            if self.grid.board.validate(row, col, choice):
+                if self.gui_solve(row, col + 1):
                     return True
+            # pygame.display.update()
+            # pygame.time.delay(100)
         # exhausted all possibilities (backtrack)
-        # self.update(row, col, 0)
         self.grid.input(row, col, 0)
         return False
+    
+    def reset(self):
+        for row in range(9):
+            for col in range(9):
+                self.grid.input(row, col, 0)
