@@ -17,3 +17,5 @@ validating them until a solution is found.
 3. Goal: Successfully solve the Sudoku puzzle.
 
 Enjoy the Sudoku-solving experience, and feel free to reach out if you have any questions or suggestions!
+
+Meghan Leicht
