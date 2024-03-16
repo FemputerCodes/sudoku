@@ -9,7 +9,7 @@ Examples-
     $ python setup.py install
 
     # To install the package in development mode:
-    $ python setup.py develop.
+    $ python setup.py develop
 """
 from setuptools import setup, find_packages
 
