@@ -7,7 +7,3 @@ BUTTON_COLOR = "white"
 BUTTON_COLOR_ACTIVE = "#cacbd4"
 TEXT_COLOR = "black"
 INVALID_COLOR = "red"
-
-
-# #d5d3df
-# #555555
