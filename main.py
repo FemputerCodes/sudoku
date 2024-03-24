@@ -1,10 +1,9 @@
 import asyncio
 import pygame
 from src.game import game
-from src.styles import SCREEN_COLOR
+from src.styles import SCREEN_COLOR, TEXT_COLOR
 from src.classes.gui.grid import Grid
 from src.classes.gui.button import Button
-import time
 
 pygame.init()
 pygame.font.init()
@@ -35,37 +34,40 @@ RESET_END_X = RESET_START_X + RESET_WIDTH
 RESET_START_Y = GRID_HEIGHT + (2 * GRID_HEIGHT_OFFSET)
 RESET_END_Y = RESET_START_Y + RESET_HEIGHT
 
+WATCH_WIDTH = 120 
+WATCH_HEIGHT = 60
+WATCH_START_X = (SCREEN_WIDTH / 2) + 300
+WATCH_END_X = WATCH_START_X + WATCH_WIDTH
+WATCH_START_Y = 2 * GRID_HEIGHT_OFFSET
+WATCH_END_Y = WATCH_START_Y + WATCH_HEIGHT
 
-def redraw(screen, grid, solver, reset, play_time):
+def redraw(screen, grid, solver, reset, watch):
     screen.fill(SCREEN_COLOR)
-    # draw time
-    # text = font.render("Time: " + str(play_time) + " seconds", 1, (0,0,0))
-    # screen.blit(text, (SCREEN_WIDTH-250, SCREEN_HEIGHT-40))
-    # draw grid and buttons
     grid.draw()
     solver.draw()
     reset.draw()
+    watch.draw()
+    textFont = pygame.font.SysFont(None, 20)
+    gui_solve_text = textFont.render("*this takes a long time to run", True, TEXT_COLOR)
+    screen.blit(gui_solve_text, (WATCH_START_X+10, WATCH_START_Y+WATCH_HEIGHT+10))
 
 async def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     screen.fill(SCREEN_COLOR)
     pygame.display.set_caption("Sudoku")
     
-    clock = pygame.time.Clock()
-
     grid = Grid(screen, GRID_WIDTH, GRID_HEIGHT, GRID_WIDTH_OFFSET, GRID_HEIGHT_OFFSET, GRID_ROWS, GRID_COLS)
     solver = Button(screen, grid, "SOLVE", SOLVE_WIDTH, SOLVE_HEIGHT, SOLVE_START_X, SOLVE_END_X, SOLVE_START_Y, SOLVE_END_Y)
     reset = Button(screen, grid, "RESET", RESET_WIDTH, RESET_HEIGHT, RESET_START_X, RESET_END_X, RESET_START_Y, RESET_END_Y)
+    watch = Button(screen, grid, "WATCH", WATCH_WIDTH, WATCH_HEIGHT, WATCH_START_X, WATCH_END_X, WATCH_START_Y, WATCH_END_Y)
 
     key = 0
     row = 0
     col = 0
 
     running = True
-    start = time.time()
 
     while(running):
-        play_time = round(time.time() - start)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -83,6 +85,8 @@ async def main():
                 elif RESET_START_X <= position[0] <= RESET_END_X and RESET_START_Y <= position[1] <= RESET_END_Y:
                     reset.click()
                     reset.reset()
+                elif WATCH_START_X <= position[0] <= WATCH_END_X and WATCH_START_Y <= position[1] <= WATCH_END_Y:
+                    watch.gui_solve(0, 0, event)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_TAB:
                     key = 0
@@ -118,17 +122,15 @@ async def main():
                 if event.key == pygame.K_DELETE or event.key == pygame.K_BACKSPACE:
                     key = 0
                     grid.input(row, col, key)
-                if event.key == pygame.K_s:
-                    solver.gui_solve(0, 0, event)
+        
         grid.check()
 
         # if (grid.solved()):
             # running = False
 
-        redraw(screen, grid, solver, reset, play_time)
+        redraw(screen, grid, solver, reset, watch)
 
         pygame.display.update()
-        # clock.tick(50)
 
         await asyncio.sleep(0)
         if not running:
