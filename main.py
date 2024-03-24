@@ -41,15 +41,15 @@ WATCH_END_X = WATCH_START_X + WATCH_WIDTH
 WATCH_START_Y = 2 * GRID_HEIGHT_OFFSET
 WATCH_END_Y = WATCH_START_Y + WATCH_HEIGHT
 
-def redraw(screen, grid, solver, reset, watch):
+def redraw(screen, grid, solver, reset):
     screen.fill(SCREEN_COLOR)
     grid.draw()
     solver.draw()
     reset.draw()
-    watch.draw()
-    textFont = pygame.font.SysFont(None, 20)
-    gui_solve_text = textFont.render("*this takes a long time to run", True, TEXT_COLOR)
-    screen.blit(gui_solve_text, (WATCH_START_X+10, WATCH_START_Y+WATCH_HEIGHT+10))
+    # watch.draw()
+    # textFont = pygame.font.SysFont(None, 20)
+    # gui_solve_text = textFont.render("*this takes a long time to run", True, TEXT_COLOR)
+    # screen.blit(gui_solve_text, (WATCH_START_X+10, WATCH_START_Y+WATCH_HEIGHT+10))
 
 async def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -59,7 +59,7 @@ async def main():
     grid = Grid(screen, GRID_WIDTH, GRID_HEIGHT, GRID_WIDTH_OFFSET, GRID_HEIGHT_OFFSET, GRID_ROWS, GRID_COLS)
     solver = Button(screen, grid, "SOLVE", SOLVE_WIDTH, SOLVE_HEIGHT, SOLVE_START_X, SOLVE_END_X, SOLVE_START_Y, SOLVE_END_Y)
     reset = Button(screen, grid, "RESET", RESET_WIDTH, RESET_HEIGHT, RESET_START_X, RESET_END_X, RESET_START_Y, RESET_END_Y)
-    watch = Button(screen, grid, "WATCH", WATCH_WIDTH, WATCH_HEIGHT, WATCH_START_X, WATCH_END_X, WATCH_START_Y, WATCH_END_Y)
+    # watch = Button(screen, grid, "WATCH", WATCH_WIDTH, WATCH_HEIGHT, WATCH_START_X, WATCH_END_X, WATCH_START_Y, WATCH_END_Y)
 
     key = 0
     row = 0
@@ -85,8 +85,8 @@ async def main():
                 elif RESET_START_X <= position[0] <= RESET_END_X and RESET_START_Y <= position[1] <= RESET_END_Y:
                     reset.click()
                     reset.reset()
-                elif WATCH_START_X <= position[0] <= WATCH_END_X and WATCH_START_Y <= position[1] <= WATCH_END_Y:
-                    watch.gui_solve(0, 0, event)
+                # elif WATCH_START_X <= position[0] <= WATCH_END_X and WATCH_START_Y <= position[1] <= WATCH_END_Y:
+                    # watch.gui_solve(0, 0, event)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_TAB:
                     key = 0
@@ -128,7 +128,7 @@ async def main():
         # if (grid.solved()):
             # running = False
 
-        redraw(screen, grid, solver, reset, watch)
+        redraw(screen, grid, solver, reset)
 
         pygame.display.update()
 
