@@ -2,12 +2,24 @@ import pygame
 from src.classes.board import Board
 from src.classes.gui.square import Square
 from src.styles import GRID_COLOR, GRID_LINE_COLOR
-from pygame import Surface
-from typing import Tuple
 
 
 class Grid():
-    def __init__(self, screen: Surface, width: int, height: int, width_offset: int, height_offset: int, rows: int, cols: int):
+    """Represents the grid containing the Sudoku board in the GUI."""
+
+    def __init__(self, screen, width, height, width_offset, height_offset, rows, cols):
+        """Initialize the Grid object.
+
+        Args:
+            screen (Surface): The pygame screen object.
+            width (int): The width of the grid.
+            height (int): The height of the grid.
+            width_offset (int): The x-coordinate offset of the grid.
+            height_offset (int): The y-coordinate offset of the grid.
+            rows (int): The number of rows in the grid.
+            cols (int): The number of columns in the grid.
+        """
+
         self.screen = screen
         self.width = width
         self.height = height
@@ -23,6 +35,7 @@ class Grid():
 
 
     def draw(self):
+        """Draw the grid and squares on the screen."""
         gridframe = pygame.Rect(
             self.width_offset-1,
             self.height_offset-1,
@@ -38,6 +51,7 @@ class Grid():
 
     
     def __draw_horizontal_lines(self):
+        """Draw horizontal grid lines."""
         cell_height = self.height / self.rows
         for i in range(1, self.rows):
             if i % 3 == 0:
@@ -54,6 +68,7 @@ class Grid():
 
 
     def __draw_vertical_lines(self):
+        """Draw vertical grid lines."""
         cell_width = self.width / self.cols
 
         for j in range(1, self.cols):
@@ -70,7 +85,13 @@ class Grid():
                 )
    
     
-    def click(self, row: int, col: int):
+    def click(self, row, col):
+        """Activate the selected button and deactivate any other active button.
+
+        Args:
+            row (int): The row index of the selected button.
+            col (int): The column index of the selected button.
+        """
         # deactivate any active buttton
         for r in range(self.rows):
             for c in range(self.cols):
@@ -79,22 +100,44 @@ class Grid():
         self.squares[row][col].activate()
 
 
-    def next(self, row, col) -> Tuple:
+    def next(self, row, col):
+        """Get the coordinates of the next cell to be solved.
+
+        Args:
+            row (int): The current row index.
+            col (int): The current column index.
+
+        Returns:
+            Tuple: The coordinates (row, col) of the next cell to solve.
+        """
         return self.board.get_next(row, col+1)
 
 
-    def input(self, row: int, col: int, choice: int):
+    def input(self, row, col, choice):
+        """Update the value of a cell in the Sudoku board.
+
+        Args:
+            row (int): The row index of the cell.
+            col (int): The column index of the cell.
+            choice (int): The number to be input into the cell.
+        """
         self.board.update(row, col, choice)
 
     
     def check(self):
+        """Check the validity of the Sudoku board."""
         for row in range(self.rows):
             for col in range(self.cols):
                 number = self.board.puzzle[row][col]
                 self.board.validate(row, col, number)
         
     
-    def solved(self) -> bool:
+    def solved(self):
+        """Check if the Sudoku puzzle is solved.
+
+        Returns:
+            bool: True if the puzzle is solved, False otherwise.
+        """
         for row in range(self.rows):
             for col in range(self.cols):
                 a_cell = self.board.get_cell(row, col)
@@ -102,5 +145,7 @@ class Grid():
                     return False
         return True
 
+
     def solve(self):
+        """Solve the Sudoku puzzle."""
         self.board.solve(0, 0)

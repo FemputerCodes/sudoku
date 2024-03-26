@@ -3,6 +3,7 @@ from time import sleep
 
 
 def game():
+    """Starts a Sudoku game in the terminal."""
     board = Board()
     start_game = '\033[1;34mSTART GAME\033[m'
     solve_game = '\033[1;92mSOLVE GAME\033[m'

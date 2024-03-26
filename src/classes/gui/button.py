@@ -4,7 +4,22 @@ from src.styles import TEXT_COLOR, BUTTON_COLOR, BUTTON_COLOR_ACTIVE
 font = pygame.font.SysFont(None, 40)
 
 class Button():
+    """Represents a clickable button in the Sudoku GUI."""
+
     def __init__(self, screen, grid, text, width, height, start_x, end_x, start_y, end_y):
+        """Initialize the Button object.
+
+        Args:
+            screen (Surface): The pygame screen object.
+            grid (Grid): The Sudoku grid object.
+            text (string): The text displayed on the button.
+            width (int): The width of the button.
+            height (int): The height of the button.
+            start_x (int): The x-coordinate of the top-left corner of the button.
+            end_x (int): The x-coordinate of the bottom-right corner of the button.
+            start_y (int): The y-coordinate of the top-left corner of the button.
+            end_y (int): The y-coordinate of the bottom-right corner of the button.
+        """
         self.screen = screen
         self.grid = grid
         self.text = text
@@ -19,6 +34,7 @@ class Button():
 
 
     def draw(self):
+        """Draw the button on the screen."""
         solve_x = self.start_x + ((self.width - font.size(self.text)[0]) // 2)
         solve_y = self.start_y + ((self.height - font.get_height()) // 2)
         solve_font = font.render(str(self.text), True, TEXT_COLOR)
@@ -37,15 +53,27 @@ class Button():
 
 
     def click(self):
+        """Toggle the button's active state."""
         self.active = not self.active
 
     
     def solve(self):
+        """Solve the Sudoku puzzle using the grid."""
         self.reset()
         self.grid.solve()
 
     
     def gui_solve(self, row, col, event):
+        """Solve the Sudoku puzzle recursively using the backtracking algorithm with visual representation.
+
+        Args:
+            row (int): The current row index.
+            col (int): The current column index.
+            event (pygame.event): The pygame event object.
+
+        Returns:
+            bool: True if the puzzle is solved, False otherwise.
+        """
         # base case 1: end of grid (success!)
         if row == len(self.grid.board.puzzle):
             return True
@@ -70,6 +98,7 @@ class Button():
         return False
         
     def reset(self):
+        """Reset the Sudoku grid."""
         for row in range(9):
             for col in range(9):
                 self.grid.input(row, col, 0)

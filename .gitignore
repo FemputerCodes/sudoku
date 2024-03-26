@@ -1,3 +1,12 @@
+# The following files and directories are excluded or irrelevant:
+
+# - .venv: This directory contains Python virtual environment files and settings, which are typically excluded from version control systems.
+# - .DS_Store: This file is a macOS system file that stores custom attributes of its containing folder. It is often excluded from version control.
+# - README-dev.md: This file provides development-related instructions or information for me.
+# - web.zip: This file is a compressed archive, containing web-related assets and files for uploading the game to itch.io.
+
+# These items are excluded from the documentation because they are not relevant to the Python code or its functionality."""
+
 .venv
 .DS_Store
 README-dev.md

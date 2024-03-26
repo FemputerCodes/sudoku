@@ -1,3 +1,5 @@
+# The provided script is a Makefile for managing the project's virtual environment, dependencies, and running the application.
+
 .ONESHELL:
 
 .DEFAULT_GOAL := run

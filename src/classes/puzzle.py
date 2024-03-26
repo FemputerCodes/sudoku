@@ -1,4 +1,4 @@
 """
-implement the puzzle class later
-this is how I will generate new puzzles
+Implementation of the puzzle class is coming soon.
+This will enable the ability to generate new puzzles.
 """

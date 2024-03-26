@@ -1,3 +1,4 @@
+"""Colors for styling the Sudoku GUI."""
 SCREEN_COLOR = "#6b6b6b"
 GRID_COLOR = "black"
 GRID_LINE_COLOR = "black"

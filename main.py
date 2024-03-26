@@ -42,6 +42,14 @@ WATCH_START_Y = 2 * GRID_HEIGHT_OFFSET
 WATCH_END_Y = WATCH_START_Y + WATCH_HEIGHT
 
 def redraw(screen, grid, solver, reset):
+    """Redraw the screen with updated components.
+
+    Args:
+        screen (Surface): The pygame screen object.
+        grid (Grid): The Sudoku grid object.
+        solver (Button): The solve button object.
+        reset (Button): The reset button object.
+    """
     screen.fill(SCREEN_COLOR)
     grid.draw()
     solver.draw()
@@ -52,6 +60,7 @@ def redraw(screen, grid, solver, reset):
     # screen.blit(gui_solve_text, (WATCH_START_X+10, WATCH_START_Y+WATCH_HEIGHT+10))
 
 async def main():
+    """Main function for running the Sudoku game."""
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     screen.fill(SCREEN_COLOR)
     pygame.display.set_caption("Sudoku")

@@ -2,7 +2,10 @@ from .cell import Cell
 from typing import Tuple
 
 class Board:
+    """Represents a Sudoku board."""
+
     def __init__(self):
+        """Initializes a Sudoku board."""
         self.rows = 9
         self.cols = 9
         self.choices = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -31,11 +34,26 @@ class Board:
                     self.cells[row][col].set_fixed(True)
 
 
-    def get_cell(self, row, col) -> Cell:
+    def get_cell(self, row: int, col: int) -> Cell:
+        """Get the cell at the specified row and column.
+        Args:
+            row (int): The row index.
+            col (int): The column index.
+
+        Returns:
+            Cell: The cell at the specified row and column.
+        """
         return self.cells[row][col]
     
 
-    def update(self, row, col, choice):
+    def update(self, row: int, col: int, choice: int) -> None:
+        """Update the cell at the specified row and column with a choice.
+        
+        Args:
+            row (int): The row index.
+            col (int): The column index.
+            choice (int): The choice to update the cell with.
+        """
         if not self.cells[row][col].get_fixed():
             if choice in self.choices:
                 self.cells[row][col].insert_choice(choice)
@@ -46,6 +64,15 @@ class Board:
 
 
     def get_next(self, row: int, col: int) -> Tuple:
+        """Get the next cell coordinates to solve.
+        
+        Args:
+            row (int): The current row index.
+            col (int): The current column index.
+
+        Returns:
+            Tuple: The coordinates (row, col) of the next cell to solve.
+        """
         # base case: end of puzzle
         if (row > 8):
             return (0, 0)
@@ -59,7 +86,17 @@ class Board:
         return self.get_next(row, col+1)
 
 
-    def validate(self, row, col, choice):
+    def validate(self, row: int, col: int, choice: int) -> bool:
+        """Validate a choice for the cell at the specified row and column.
+        
+        Args:
+            row (int): The row index.
+            col (int): The column index.
+            choice (int): The choice to validate.
+
+        Returns:
+            bool: True if the choice is valid, False otherwise.
+        """
         validation_results = [False, False, False]
 
         if choice == 0:
@@ -77,7 +114,17 @@ class Board:
         return True
 
 
-    def __check_row(self, row, col, choice):
+    def __check_row(self, row: int, col: int, choice: int) -> bool:
+        """Check if the choice is valid in the same row.
+
+        Args:
+            row (int): The row index.
+            col (int): The column index.
+            choice (int): The choice to validate.
+
+        Returns:
+            bool: True if the choice is valid, False otherwise. 
+        """
         for j in range(self.cols):
             if j != col:
                 if self.puzzle[row][j] == choice:
@@ -85,7 +132,17 @@ class Board:
         return True
 
 
-    def __check_col(self, row, col, choice):
+    def __check_col(self, row: int, col: int, choice: int) -> bool:
+        """Check if the choice is valid in the same column.
+
+        Args:
+            row (int): The row index.
+            col (int): The column index.
+            choice (int): The choice to validate.
+
+        Returns:
+            bool: True if the choice is valid, False otherwise.
+        """
         for i in range(self.rows):
             if i != row:
                 if self.puzzle[i][col] == choice:
@@ -93,19 +150,22 @@ class Board:
         return True
         
 
-    def __check_subgrid(self, row, col, choice):
+    def __check_subgrid(self, row: int, col: int, choice: int) -> bool:
+        """Check if the choice is valid in the subgrid by using integer division.
+         Integer division returns the quotient as an integer.
+
+        Args:
+            row (int): The row index.
+            col (int): The column index.
+            choice (int): The choice to validate.
+
+        Returns:
+            bool: True if the choice is valid, False otherwise.
         """
-        Using  interger division to find the subgrid.
-        Integer division returns the quotient as an integer.
-        This function returns the start row and start column of the
-        subgrid.
-        """
-        #determine the subgrid of the cell
         subgrid_row = row // 3
         subgrid_col = col // 3
         start_row = subgrid_row * 3
         start_col = subgrid_col * 3
-        # check subgrid
         for sub_row in range(start_row, start_row + 3):
             for sub_col in range(start_col, start_col + 3):
                 if sub_row != row and sub_col != col:
@@ -114,7 +174,16 @@ class Board:
         return True
 
 
-    def solve(self, row, col):
+    def solve(self, row: int, col: int) -> bool:
+        """Solve the Sudoku puzzle recursively using the backtracking algorithm.
+
+        Args:
+            row (int): The current row index.
+            col (int): The current column index.
+
+        Returns:
+            bool: True if the puzzle is solved, False otherwise.
+        """
         # base case 1: end of grid (success!)
         if row == len(self.puzzle):
             return True
@@ -135,7 +204,8 @@ class Board:
         return False
     
     
-    def display(self):
+    def display(self) -> None:
+        """Prints the Sudoku board."""
         for row in range(self.rows):
             for col in range(self.cols):
                 print(self.cells[row][col].get_number(), end=" ")

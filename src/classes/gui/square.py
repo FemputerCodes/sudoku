@@ -1,13 +1,24 @@
 import pygame
 from src.styles import SQUARE_COLOR, SQUARE_COLOR_ACTIVE, TEXT_COLOR, INVALID_COLOR
-from pygame import Surface
 from src.classes.cell import Cell
 
 pygame.font.init()
 font = pygame.font.SysFont(None, 40)
 
 class Square():
-    def __init__(self, cell: Cell, row: int, col: int, width: int, height):
+    """Represents a square on the Sudoku grid."""
+
+    def __init__(self, cell, row, col, width, height):
+        """Initialize the Square object.
+
+        Args:
+            cell (Cell): The cell object associated with the square.
+            row (int): The row index of the square.
+            col (int): The column index of the square.
+            width (int): The width of the square.
+            height (int): The height of the square.
+        """
+
         self.cell = cell
         self.row = row
         self.col = col
@@ -17,7 +28,14 @@ class Square():
         self.active = False
 
 
-    def draw(self, screen: Surface, width_offset: int, height_offset: int):
+    def draw(self, screen, width_offset, height_offset):
+        """Draw the square on the screen.
+
+        Args:
+            screen (Surface): The pygame screen object.
+            width_offset (int): The x-coordinate offset of the square.
+            height_offset (int): The y-coordinate offset of the square.
+        """
         self.text = str(self.cell.get_number())
         if self.text == '0':
             self.text = ""
@@ -54,14 +72,21 @@ class Square():
     
 
     def activate(self):
+        """Activate the square if it's not fixed."""
         is_fixed = self.cell.get_fixed()
         if not is_fixed:
             self.active = True
 
     
     def deactivate(self):
+        """Deactivate the square."""
         self.active = False
 
 
     def get_active_state(self):
+        """Get the active state of the square.
+
+        Returns:
+            bool: True if the square is active, False otherwise.
+        """
         return self.active
